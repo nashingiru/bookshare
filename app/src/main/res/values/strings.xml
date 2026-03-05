@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BookShare</string>
+    <string name="splash_tagline">Comparte el conocimiento, une lectores</string>
+
+    <!-- Auth -->
+    <string name="login_title">Iniciar Sesión</string>
+    <string name="login_welcome">¡Bienvenido de vuelta!</string>
+    <string name="login_subtitle">Inicia sesión para continuar</string>
+    <string name="register_title">Crear Cuenta</string>
+    <string name="btn_login">Iniciar Sesión</string>
+    <string name="btn_register">Crear Cuenta</string>
+    <string name="no_account_register">¿No tienes cuenta? Regístrate aquí</string>
+    <string name="have_account_login">¿Ya tienes cuenta? Inicia sesión</string>
+
+    <!-- Hints -->
+    <string name="hint_email">Correo electrónico</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="hint_confirm_password">Confirmar contraseña</string>
+    <string name="hint_name">Nombre completo</string>
+    <string name="hint_book_title">Título del libro *</string>
+    <string name="hint_author">Autor *</string>
+    <string name="hint_isbn">ISBN (opcional)</string>
+    <string name="hint_description">Descripción (opcional)</string>
+    <string name="hint_genre">Género</string>
+    <string name="hint_your_name">Tu nombre</string>
+    <string name="hint_message">Mensaje para el propietario…</string>
+
+    <!-- Nav -->
+    <string name="nav_home">Inicio</string>
+    <string name="nav_profile">Mi Perfil</string>
+
+    <!-- Books -->
+    <string name="add_book">Agregar Libro</string>
+    <string name="add_book_title">Agregar Libro</string>
+    <string name="book_detail_title">Detalle del Libro</string>
+    <string name="empty_books">📚 No hay libros disponibles.\nSé el primero en compartir uno.</string>
+    <string name="search_hint">Buscar libros o autores…</string>
+    <string name="description">Descripción</string>
+    <string name="my_books">Mis Libros</string>
+    <string name="no_books_yet">Aún no has compartido libros.\nToca el botón para agregar uno.</string>
+    <string name="available_for_exchange">Disponible para intercambio</string>
+    <string name="delete_book">Eliminar libro</string>
+    <string name="btn_save_book">Guardar Libro</string>
+    <string name="btn_cancel">Cancelar</string>
+    <string name="btn_delete_book">Eliminar mi libro</string>
+    <string name="btn_request_exchange">Solicitar Intercambio</string>
+    <string name="btn_autocomplete">Autocompletar desde Open Library</string>
+
+    <!-- Contact -->
+    <string name="request_exchange_title">Solicitar Intercambio</string>
+    <string name="request_exchange_subtitle">Envía un mensaje al propietario del libro para coordinar el intercambio.</string>
+    <string name="btn_send_request">Enviar Solicitud</string>
+
+    <!-- Profile -->
+    <string name="logout">Cerrar Sesión</string>
+</resources>
