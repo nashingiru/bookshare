@@ -8,5 +8,5 @@ fun View.showSnackbar(message: String, duration: Int = Snackbar.LENGTH_SHORT) {
 }
 
 fun String.isValidEmail(): Boolean {
-    return android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
+    return ValidationUtils.isValidEmail(this)
 }

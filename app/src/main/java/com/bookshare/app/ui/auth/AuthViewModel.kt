@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.bookshare.app.model.Resource
 import com.bookshare.app.model.User
 import com.bookshare.app.repository.AuthRepository
+import com.bookshare.app.utils.ValidationUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -47,7 +48,7 @@ class AuthViewModel @Inject constructor(
             _loginState.value = Resource.Error("El correo no puede estar vacío")
             return false
         }
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (!ValidationUtils.isValidEmail(email)) {
             _loginState.value = Resource.Error("Ingresa un correo válido")
             return false
         }
@@ -63,7 +64,7 @@ class AuthViewModel @Inject constructor(
             _registerState.value = Resource.Error("El nombre no puede estar vacío")
             return false
         }
-        if (email.isBlank() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (email.isBlank() || !ValidationUtils.isValidEmail(email)) {
             _registerState.value = Resource.Error("Ingresa un correo válido")
             return false
         }

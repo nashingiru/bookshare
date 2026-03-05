@@ -63,6 +63,12 @@
     </fragment>
 
     <fragment
+        android:id="@+id/loansFragment"
+        android:name="com.bookshare.app.ui.loans.LoansFragment"
+        android:label="@string/nav_loans"
+        tools:layout="@layout/fragment_loans" />
+
+    <fragment
         android:id="@+id/bookDetailFragment"
         android:name="com.bookshare.app.ui.books.BookDetailFragment"
         android:label="@string/book_detail_title"
@@ -85,7 +91,11 @@
         android:id="@+id/contactFragment"
         android:name="com.bookshare.app.ui.books.ContactFragment"
         android:label="@string/request_exchange_title"
-        tools:layout="@layout/fragment_contact" />
+        tools:layout="@layout/fragment_contact">
+        <argument
+            android:name="bookId"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/profileFragment"

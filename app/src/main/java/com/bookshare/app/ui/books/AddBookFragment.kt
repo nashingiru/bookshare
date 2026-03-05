@@ -5,15 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bookshare.app.databinding.FragmentAddBookBinding
 import com.bookshare.app.model.Book
 import com.bookshare.app.model.BookGenre
 import com.bookshare.app.model.Resource
 import com.bookshare.app.utils.showSnackbar
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.UUID
 
 @AndroidEntryPoint
@@ -42,6 +48,8 @@ class AddBookFragment : Fragment() {
         binding.spinnerGenre.adapter = adapter
     }
 
+    private var isbnPreviewJob: Job? = null
+
     private fun setupClickListeners() {
         binding.btnSave.setOnClickListener {
             val title = binding.etTitle.text.toString().trim()
@@ -64,9 +72,10 @@ class AddBookFragment : Fragment() {
                 genre = genre,
                 isbn = isbn,
                 isAvailable = isAvailable,
-                coverUrl = generateCoverUrl(isbn)
+                coverUrl = "" // will be resolved automatically in ViewModel
             )
-            viewModel.addBook(book)
+            // Uses addBookWithCover: auto-fetches cover from Open Library API
+            viewModel.addBookWithCover(book)
         }
 
         binding.btnCancel.setOnClickListener {
@@ -79,10 +88,27 @@ class AddBookFragment : Fragment() {
                 viewModel.searchBooksFromApi(query)
             }
         }
-    }
 
-    private fun generateCoverUrl(isbn: String): String {
-        return if (isbn.isNotBlank()) "https://covers.openlibrary.org/b/isbn/$isbn-M.jpg" else ""
+        // Live ISBN cover preview: updates cover image as user types ISBN
+        binding.etIsbn.addTextChangedListener { text ->
+            isbnPreviewJob?.cancel()
+            val isbn = text.toString().trim()
+            if (isbn.length >= 10) {
+                isbnPreviewJob = viewLifecycleOwner.lifecycleScope.launch {
+                    delay(800) // debounce 800ms
+                    val url = "https://covers.openlibrary.org/b/isbn/$isbn-M.jpg"
+                    Glide.with(requireContext())
+                        .load(url)
+                        .placeholder(com.bookshare.app.R.drawable.ic_book_placeholder)
+                        .error(com.bookshare.app.R.drawable.ic_book_placeholder)
+                        .into(binding.ivCoverPreview)
+                }
+            } else {
+                Glide.with(requireContext())
+                    .load(com.bookshare.app.R.drawable.ic_book_placeholder)
+                    .into(binding.ivCoverPreview)
+            }
+        }
     }
 
     private fun observeViewModel() {
@@ -114,7 +140,15 @@ class AddBookFragment : Fragment() {
                         binding.etTitle.setText(book.title)
                         binding.etAuthor.setText(book.author)
                         if (book.isbn.isNotBlank()) binding.etIsbn.setText(book.isbn)
-                        binding.root.showSnackbar("Datos completados desde Open Library")
+                        // Show cover preview from API result
+                        if (book.coverUrl.isNotBlank()) {
+                            Glide.with(requireContext())
+                                .load(book.coverUrl)
+                                .placeholder(com.bookshare.app.R.drawable.ic_book_placeholder)
+                                .error(com.bookshare.app.R.drawable.ic_book_placeholder)
+                                .into(binding.ivCoverPreview)
+                        }
+                        binding.root.showSnackbar("✅ Datos completados desde Open Library")
                     } ?: binding.root.showSnackbar("No se encontraron resultados")
                 }
                 is Resource.Error -> {

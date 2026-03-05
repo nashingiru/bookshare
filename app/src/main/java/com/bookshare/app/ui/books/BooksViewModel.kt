@@ -53,6 +53,13 @@ class BooksViewModel @Inject constructor(
         }
     }
 
+    fun loadBook(bookId: String) {
+        viewModelScope.launch {
+            val book = bookRepository.getBookById(bookId)
+            _selectedBook.value = book
+        }
+    }
+
     fun addBook(book: Book) {
         val uid = authRepository.currentUser?.uid ?: return
         val userName = authRepository.currentUser?.displayName ?: "Usuario"
@@ -60,6 +67,28 @@ class BooksViewModel @Inject constructor(
 
         viewModelScope.launch {
             _addBookState.value = Resource.Loading()
+            _addBookState.value = bookRepository.addBook(bookWithOwner)
+        }
+    }
+
+    fun addBookWithCover(book: Book) {
+        val uid = authRepository.currentUser?.uid ?: return
+        val userName = authRepository.currentUser?.displayName ?: "Usuario"
+
+        viewModelScope.launch {
+            _addBookState.value = Resource.Loading()
+
+            val resolvedCoverUrl = if (book.coverUrl.isNotBlank()) {
+                book.coverUrl
+            } else {
+                bookRepository.resolveCoverUrl(book.isbn, book.title, book.author)
+            }
+
+            val bookWithOwner = book.copy(
+                ownerUid = uid,
+                ownerName = userName,
+                coverUrl = resolvedCoverUrl
+            )
             _addBookState.value = bookRepository.addBook(bookWithOwner)
         }
     }

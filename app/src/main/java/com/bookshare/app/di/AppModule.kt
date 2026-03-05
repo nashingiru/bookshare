@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.bookshare.app.data.local.BookShareDatabase
 import com.bookshare.app.data.local.dao.BookDao
 import com.bookshare.app.data.local.dao.UserDao
+import com.bookshare.app.data.local.dao.LoanRequestDao
 import com.bookshare.app.data.remote.api.OpenLibraryApi
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -36,6 +37,9 @@ object AppModule {
 
     @Provides
     fun provideUserDao(db: BookShareDatabase): UserDao = db.userDao()
+
+    @Provides
+    fun provideLoanRequestDao(db: BookShareDatabase): LoanRequestDao = db.loanRequestDao()
 
     @Provides
     @Singleton

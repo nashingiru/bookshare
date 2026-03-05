@@ -1,6 +1,7 @@
 package com.bookshare.app.ui
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -30,8 +31,9 @@ class MainActivity : AppCompatActivity() {
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
+        // Top-level destinations
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.homeFragment, R.id.splashFragment)
+            setOf(R.id.homeFragment, R.id.loansFragment, R.id.profileFragment)
         )
 
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -43,12 +45,12 @@ class MainActivity : AppCompatActivity() {
                 R.id.splashFragment,
                 R.id.loginFragment,
                 R.id.registerFragment -> {
-                    binding.bottomNavigation.visibility = android.view.View.GONE
-                    binding.toolbar.visibility = android.view.View.GONE
+                    binding.bottomNavigation.visibility = View.GONE
+                    binding.toolbar.visibility = View.GONE
                 }
                 else -> {
-                    binding.bottomNavigation.visibility = android.view.View.VISIBLE
-                    binding.toolbar.visibility = android.view.View.VISIBLE
+                    binding.bottomNavigation.visibility = View.VISIBLE
+                    binding.toolbar.visibility = View.VISIBLE
                 }
             }
         }

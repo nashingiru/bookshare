@@ -32,6 +32,10 @@ class BookDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        
+        // Load book data using the ID from arguments
+        viewModel.loadBook(args.bookId)
+        
         observeViewModel()
         setupClickListeners()
     }
@@ -79,6 +83,9 @@ class BookDetailFragment : Fragment() {
             // Show delete button only for owner
             val isOwner = book.ownerUid == viewModel.getCurrentUserId()
             btnDelete.visibility = if (isOwner) View.VISIBLE else View.GONE
+            
+            // Hide contact button if it's user's own book or not available
+            btnContact.visibility = if (isOwner || !book.isAvailable) View.GONE else View.VISIBLE
         }
     }
 
@@ -90,7 +97,10 @@ class BookDetailFragment : Fragment() {
         }
 
         binding.btnContact.setOnClickListener {
-            findNavController().navigate(R.id.action_bookDetailFragment_to_contactFragment)
+            currentBook?.let { book ->
+                val action = BookDetailFragmentDirections.actionBookDetailFragmentToContactFragment(book.id)
+                findNavController().navigate(action)
+            }
         }
     }
 

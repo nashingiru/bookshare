@@ -79,6 +79,28 @@ class BookRepository @Inject constructor(
         }
     }
 
+    // Resolve cover URL: tries ISBN first, then title+author search
+    suspend fun resolveCoverUrl(isbn: String, title: String, author: String): String =
+        withContext(Dispatchers.IO) {
+            // 1. If ISBN provided, use direct cover endpoint (fastest)
+            if (isbn.isNotBlank()) {
+                val isbnUrl = "https://covers.openlibrary.org/b/isbn/$isbn-M.jpg"
+                return@withContext isbnUrl
+            }
+            // 2. Search by title (+ author if available) to get cover_i
+            try {
+                val query = if (author.isNotBlank()) "$title $author" else title
+                val response = openLibraryApi.searchBooks(query, limit = 5)
+                if (response.isSuccessful) {
+                    val coverUrl = response.body()?.docs
+                        ?.firstOrNull { it.coverId != null }
+                        ?.getCoverUrl() ?: ""
+                    return@withContext coverUrl
+                }
+            } catch (_: Exception) {}
+            ""
+        }
+
     // Open Library API
     suspend fun searchBooksFromApi(query: String): Resource<List<Book>> = withContext(Dispatchers.IO) {
         try {

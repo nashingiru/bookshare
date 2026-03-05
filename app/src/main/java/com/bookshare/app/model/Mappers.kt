@@ -1,6 +1,7 @@
 package com.bookshare.app.model
 
 import com.bookshare.app.data.local.entities.BookEntity
+import com.bookshare.app.data.local.entities.LoanRequestEntity
 import com.bookshare.app.data.local.entities.UserEntity
 import com.bookshare.app.data.remote.dto.BookSearchDoc
 
@@ -26,6 +27,20 @@ fun UserEntity.toDomain(): User = User(
 fun User.toEntity(): UserEntity = UserEntity(
     uid = uid, name = name, email = email, photoUrl = photoUrl,
     bio = bio, booksShared = booksShared, booksExchanged = booksExchanged
+)
+
+fun LoanRequestEntity.toDomain(): LoanRequest = LoanRequest(
+    id = id, bookId = bookId, bookTitle = bookTitle, bookCoverUrl = bookCoverUrl,
+    requesterUid = requesterUid, requesterName = requesterName,
+    ownerUid = ownerUid, ownerName = ownerName, message = message,
+    status = status, createdAt = createdAt
+)
+
+fun LoanRequest.toEntity(): LoanRequestEntity = LoanRequestEntity(
+    id = id, bookId = bookId, bookTitle = bookTitle, bookCoverUrl = bookCoverUrl,
+    requesterUid = requesterUid, requesterName = requesterName,
+    ownerUid = ownerUid, ownerName = ownerName, message = message,
+    status = status, createdAt = createdAt
 )
 
 fun BookSearchDoc.toDomain(ownerUid: String = "", ownerName: String = ""): Book = Book(

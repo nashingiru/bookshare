@@ -28,6 +28,7 @@
 
     <!-- Nav -->
     <string name="nav_home">Inicio</string>
+    <string name="nav_loans">Préstamos</string>
     <string name="nav_profile">Mi Perfil</string>
 
     <!-- Books -->
